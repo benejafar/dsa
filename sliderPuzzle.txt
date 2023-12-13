@@ -1,0 +1,5 @@
+hamming and manhattan distances
+
+comparing two boards for equality
+
+neighbors() method
