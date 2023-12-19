@@ -1,5 +1,10 @@
 package com.jafar.week4.ElementarySymbolTables;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.management.QueryEval;
+
 import edu.princeton.cs.algs4.Queue;
 
 public class BST<Key extends Comparable<Key>, Value> {
@@ -38,12 +43,13 @@ public class BST<Key extends Comparable<Key>, Value> {
         return x;
     }
 
-    public int size(){
+    public int size() {
         return size(root);
     }
 
-    public int size(Node x){
-        if (x == null) return 0;
+    public int size(Node x) {
+        if (x == null)
+            return 0;
         return x.count;
     }
 
@@ -87,32 +93,169 @@ public class BST<Key extends Comparable<Key>, Value> {
             return x;
     }
 
-    public int rank(Key key){
-        return rank(key,root);
+    public int rank(Key key) {
+        return rank(key, root);
     }
 
-    private int rank(Key key, Node x){
-        if (x == null) return 0;
+    private int rank(Key key, Node x) {
+        if (x == null)
+            return 0;
         int cmp = key.compareTo(x.key);
-        if (cmp < 0)    return rank(key, x.left);
-        else if (cmp > 0) return 1 + size(x.left) + rank(key, x.right);
-        else  return size(x.left);
+        if (cmp < 0)
+            return rank(key, x.left);
+        else if (cmp > 0)
+            return 1 + size(x.left) + rank(key, x.right);
+        else
+            return size(x.left);
     }
 
-    public Iterable<Key> keys(){
+    public Iterable<Key> keys() {
         Queue<Key> q = new Queue<>();
-        inorder(root,q);
+        inorder(root, q);
         return q;
     }
 
-    private void inorder(Node x, Queue<Key> q){
-        if (x == null) return;
+    private void inorder(Node x, Queue<Key> q) {
+        if (x == null)
+            return;
 
-        inorder(x.left,q);
+        inorder(x.left, q);
         q.enqueue(x.key);
         inorder(x.right, q);
     }
 
-    
+    public Iterable<Key> levelOrder() {
+        Queue<Key> q = new Queue<>();
+        levelOrder(root, q);
+        return q;
+    }
+
+    //breadth first search
+    private void levelOrder(Node x, Queue<Key> q) {
+        Queue<Node> orderedQueue = new Queue<>();
+        orderedQueue.enqueue(x);
+        while (orderedQueue.size() > 0) {
+            int ordQueueLen = orderedQueue.size();
+            for (int i = 0; i < ordQueueLen; i++) {
+                Node pop = orderedQueue.dequeue();
+                q.enqueue(pop.key);
+                if (pop.left != null) {
+                    orderedQueue.enqueue(pop.left);
+                }
+                if (pop.right != null) {
+                    orderedQueue.enqueue(pop.right);
+                }
+
+            }
+        }
+    }
+
+    //to delete minimum key
+    public void delMin(){
+        root = delMin(root);
+    }
+
+    //delete min and return the root with updated count
+    private Node delMin(Node x) {
+        if (x.left == null){
+            return x.right;
+        }
+        x.left = delMin(x.left);
+        x.count = 1 + size(x.left) + size(x.right);
+        return x;
+    }
+
+    //to delete a key
+    public void delete(Key key){
+        root = delete(root,key);
+    }
+
+    // private Node delete(Node x, Key key){
+    //     if (x == null) return null;
+    //     int cmp = key.compareTo(x.key);
+    //     if (cmp < 0) x.left = delete(x.left, key);
+    //     else if (cmp > 0) x.right = delete(x.right, key);
+    //     else {
+    //         if (x.right == null) return x.left;
+    //         if (x.left == null) return x.right;
+
+    //         Node t = x;
+    //         x = min(t.right);
+    //         x.right = delMin(t.right);
+    //         x.left = t.left;
+    //     }
+    //     x.count = size(x.left) + size(x.right) + 1;
+    //     return x;
+    // }
+
+
+    private Node delete(Node x, Key key){
+        if (x == null) return null;
+        int cmp = key.compareTo(x.key);
+        if (cmp < 0) x.left = delete(x.left, key);
+        else if (cmp > 0) x.right = delete(x.right, key);
+        else {
+            if (x.left == null) return x.right;
+            if (x.right == null) return x.left;
+
+            //if node have two children
+            Node t = x;
+            x = min(t.right);
+            x.right = delMin(t.right);
+            x.left = t.left;
+        }
+        x.count = 1 + size(x.left) + size(x.right);
+        return x;
+    }
+    public Node min(Node x){
+        while(x.left != null){
+            x = x.left;
+        }
+        return x;
+    }
+
+
+
+    public static void main(String[] args) {
+        BST<String, Integer> bst = new BST<>();
+        bst.put("S", 0);
+        bst.put("E", 1);
+        bst.put("A", 2);
+        bst.put("C", 3);
+        bst.put("R", 4);
+        bst.put("H", 5);
+        bst.put("M", 7);
+        bst.put("X", 8);
+
+        for (String s : bst.keys()){System.out.print(s+", ");}
+        bst.delete("E");
+        System.out.println();
+        for (String s : bst.keys()){System.out.print(s+", ");}
+        System.out.println();
+
+        // System.out.println(bst.floor("G"));
+
+        // Iterable<String> itr = bst.levelOrder();
+
+        // for (String s : itr) {
+        //     System.out.print(s + ", ");
+        // }
+        // System.out.println();
+
+        // bst.delMin();
+
+        // Iterable<String> itr1 = bst.levelOrder();
+
+        // for (String s : itr1) {
+        //     System.out.print(s + ", ");
+        // }
+        // System.out.println();
+
+
+        // for (String s : bst.keys()){
+        //     System.out.print(s + ", ");
+        // }
+
+    }
 
 }
