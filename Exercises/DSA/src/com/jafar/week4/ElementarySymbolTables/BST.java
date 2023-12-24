@@ -130,7 +130,8 @@ public class BST<Key extends Comparable<Key>, Value> {
         return q;
     }
 
-    //breadth first search
+    // assignment question
+    // breadth first search
     private void levelOrder(Node x, Queue<Key> q) {
         Queue<Node> orderedQueue = new Queue<>();
         orderedQueue.enqueue(x);
@@ -150,14 +151,14 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
     }
 
-    //to delete minimum key
-    public void delMin(){
+    // to delete minimum key
+    public void delMin() {
         root = delMin(root);
     }
 
-    //delete min and return the root with updated count
+    // delete min and return the root with updated count
     private Node delMin(Node x) {
-        if (x.left == null){
+        if (x.left == null) {
             return x.right;
         }
         x.left = delMin(x.left);
@@ -165,40 +166,44 @@ public class BST<Key extends Comparable<Key>, Value> {
         return x;
     }
 
-    //to delete a key
-    public void delete(Key key){
-        root = delete(root,key);
+    // to delete a key
+    public void delete(Key key) {
+        root = delete(root, key);
     }
 
     // private Node delete(Node x, Key key){
-    //     if (x == null) return null;
-    //     int cmp = key.compareTo(x.key);
-    //     if (cmp < 0) x.left = delete(x.left, key);
-    //     else if (cmp > 0) x.right = delete(x.right, key);
-    //     else {
-    //         if (x.right == null) return x.left;
-    //         if (x.left == null) return x.right;
+    // if (x == null) return null;
+    // int cmp = key.compareTo(x.key);
+    // if (cmp < 0) x.left = delete(x.left, key);
+    // else if (cmp > 0) x.right = delete(x.right, key);
+    // else {
+    // if (x.right == null) return x.left;
+    // if (x.left == null) return x.right;
 
-    //         Node t = x;
-    //         x = min(t.right);
-    //         x.right = delMin(t.right);
-    //         x.left = t.left;
-    //     }
-    //     x.count = size(x.left) + size(x.right) + 1;
-    //     return x;
+    // Node t = x;
+    // x = min(t.right);
+    // x.right = delMin(t.right);
+    // x.left = t.left;
+    // }
+    // x.count = size(x.left) + size(x.right) + 1;
+    // return x;
     // }
 
-
-    private Node delete(Node x, Key key){
-        if (x == null) return null;
+    private Node delete(Node x, Key key) {
+        if (x == null)
+            return null;
         int cmp = key.compareTo(x.key);
-        if (cmp < 0) x.left = delete(x.left, key);
-        else if (cmp > 0) x.right = delete(x.right, key);
+        if (cmp < 0)
+            x.left = delete(x.left, key);
+        else if (cmp > 0)
+            x.right = delete(x.right, key);
         else {
-            if (x.left == null) return x.right;
-            if (x.right == null) return x.left;
+            if (x.left == null)
+                return x.right;
+            if (x.right == null)
+                return x.left;
 
-            //if node have two children
+            // if node have two children
             Node t = x;
             x = min(t.right);
             x.right = delMin(t.right);
@@ -207,14 +212,33 @@ public class BST<Key extends Comparable<Key>, Value> {
         x.count = 1 + size(x.left) + size(x.right);
         return x;
     }
-    public Node min(Node x){
-        while(x.left != null){
+
+    public Node min(Node x) {
+        while (x.left != null) {
             x = x.left;
         }
         return x;
     }
 
+    public boolean isBST() {
+        return isBST(root, null, null);
+    }
 
+    // assignment question 2
+    private boolean isBST(Node root, Node min, Node max) {
+
+        if (root == null)
+            return true;
+
+        if (min != null && min.key.compareTo(root.key) >= 0) {
+            return false;
+        }
+        if (max != null && root.key.compareTo(max.key) >= 0) {
+            return false;
+        }
+
+        return (isBST(root.left, min, root) && isBST(root.right, root, max));
+    }
 
     public static void main(String[] args) {
         BST<String, Integer> bst = new BST<>();
@@ -227,18 +251,28 @@ public class BST<Key extends Comparable<Key>, Value> {
         bst.put("M", 7);
         bst.put("X", 8);
 
-        for (String s : bst.keys()){System.out.print(s+", ");}
-        bst.delete("E");
-        System.out.println();
-        for (String s : bst.keys()){System.out.print(s+", ");}
-        System.out.println();
+        System.out.println(bst.isBST());
+
+        // Iterable<String> inorder = bst.levelOrder();
+
+        // for(String s : inorder){
+        // System.out.print(s + ", ");
+        // }
+
+        // List<Integer> a = new ArrayList<>();
+
+        // for (String s : bst.keys()){System.out.print(s+", ");}
+        // bst.delete("E");
+        // System.out.println();
+        // for (String s : bst.keys()){System.out.print(s+", ");}
+        // System.out.println();
 
         // System.out.println(bst.floor("G"));
 
         // Iterable<String> itr = bst.levelOrder();
 
         // for (String s : itr) {
-        //     System.out.print(s + ", ");
+        // System.out.print(s + ", ");
         // }
         // System.out.println();
 
@@ -247,13 +281,12 @@ public class BST<Key extends Comparable<Key>, Value> {
         // Iterable<String> itr1 = bst.levelOrder();
 
         // for (String s : itr1) {
-        //     System.out.print(s + ", ");
+        // System.out.print(s + ", ");
         // }
         // System.out.println();
 
-
         // for (String s : bst.keys()){
-        //     System.out.print(s + ", ");
+        // System.out.print(s + ", ");
         // }
 
     }

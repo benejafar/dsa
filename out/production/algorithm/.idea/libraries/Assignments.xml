@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Assignments">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Assignments/percolation.zip!/" />
+      <root url="jar://$PROJECT_DIR$/Assignments/queues.zip!/" />
+      <root url="jar://$PROJECT_DIR$/Assignments/untitled folder.zip!/" />
+      <root url="jar://$PROJECT_DIR$/Assignments/collinear.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
