@@ -1,0 +1,10 @@
+because query point is left of that line so we go left first.
+
+
+//create a segment system as i know
+
+1. initially the root is the nearest neighbour of query.
+2. then if it is on the left we go towards the left of segment first.
+3. then if it is above we go towards the top of the line segment first .
+4. if any point come closer than previous point we have to update it.
+5. finally we have to go back in recursion for checking if there is any point left behind on the other side of our flow. we find out the least possible distance and if it is larger than our current nearest neighbour we dont consider the other side.

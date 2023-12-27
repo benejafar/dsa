@@ -1,0 +1,15 @@
+1. need to create the rectangular segment before searching for points
+
+//creation
+    1. Take first point and make it as root (to make left and right segment)
+    2. If the next point is in the left side of segment make it as the left node of root. other wise make it as right node.
+    3. this makes horizontal line and make top and bottom segments. If the next point is above the line segment make it as the right node. else make it as left node.
+
+//Range searching
+    1. check if the root node is in the rectangle. 
+    2. if the rectangle is in the left side of root chose the left node of the root node.
+    3. if the line segment is crossed by the rectangle we have to check both the top and bottom line (or left and  right node). but now we check the left node (bottom section). after recursion we look at the right node.
+    4. if a point is in the rectangle save it and recursively go back to check if any other node present in the rectangle.
+
+typical case  R + log(N)
+worst case (assuming tree is balanced) = R + N**0.5 (if the point is in the midddle of circle)
